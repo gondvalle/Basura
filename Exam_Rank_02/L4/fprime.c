@@ -32,35 +32,59 @@ $
 $> ./fprime 42 21 | cat -e
 $
 */
- #include <stdio.h>
+#include <stdio.h>
 #include <stdlib.h>
+#include <unistd.h>
 
-int	main(int argc, char *argv[])
+int isPrime(int num)
 {
 	int i;
-	int number;
 
-	if (argc == 2)
+	if (num < 2)
+		return (0);
+	if (num < 4)
+		return(1);
+	if (num % 2 == 0 || num % 3 == 0)
+		return(0);
+	i = 5;
+	while (i*i < num)
 	{
-		i = 1;
-		number = atoi(argv[1]);
-
-		if (number == 1)
-			printf("1");
-
-		while (number >= ++i)
-		{
-			if (number % i == 0)
-			{
-				printf("%d", i);
-				if (number == i)
-					break ;
-				printf("*");
-				number /= i;
-				i = 1;
-			}
-		}
+		if (num % i == 0)
+			return(0);
+		i++;
 	}
-	printf("\n");
-	return (0);
+	return(1);
+}
+
+int main(int argn, char **argv)
+{
+	int i;
+	int num;
+
+	if (argn == 2)
+	{
+		num = atoi(argv[1]);
+		if (num == '1')
+			printf("1");
+		while (num > 1)
+		{
+			i = 2;
+			while (i <= num)
+			{
+				if (isPrime(i) == 1 && num % i == 0)
+				{
+					if (num != i)
+						printf("%d*", i);
+					else
+						printf("%d", i);
+					break ;
+				}					
+				i++;			
+			}
+			num = num / i;
+		}
+		printf("\n");
+	}
+	else
+		printf("\n");
 }
